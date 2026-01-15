@@ -1,6 +1,7 @@
 const axios = require('axios');
 const { exec } = require('child_process');
 const path = require('path');
+const fs = require('fs');
 const colors = [
   '\x1b[31m', // red
   '\x1b[32m', // green
@@ -106,6 +107,23 @@ module.exports = (client) => {
     // // Handles 'user left' event when a user leaves a room
     client.on('user left', (info) => {
       console.info(info);
+    });
+
+    client.on('file', (username, filename, base64Data) => {
+      try {
+        const data = Buffer.from(base64Data, 'base64');
+        const savePath = path.join(__dirname, '../downloads', filename);
+        fs.mkdirSync(path.dirname(savePath), { recursive: true });
+        fs.writeFileSync(savePath, data);
+        console.info(`${username} sent file: ${filename} (saved to downloads/)`);
+        // Notification
+        exec(`notify-send "File received" "${filename} from ${username}"`, (error) => {});
+        // Sound
+        const soundPath = path.join(__dirname, '../noti.wav');
+        exec(`aplay "${soundPath}"`, (error) => {});
+      } catch (error) {
+        console.error('Error saving file:', error.message);
+      }
     });
 
 }

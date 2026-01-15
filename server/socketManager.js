@@ -56,6 +56,11 @@ module.exports = (io) => {
             socket.broadcast.to(room).emit('chat message', `${socket.username}: ${message}`);
         });
 
+        // Handle 'send file' event
+        socket.on('send file', (room, filename, base64Data) => {
+            socket.broadcast.to(room).emit('file', socket.username, filename, base64Data);
+        });
+
         // Handle 'disconnect' event when a client disconnects
         socket.on('disconnecting', () => {
             const room = socketRoomMap.get(socket.username); // Retrieve the room information for the socket connection

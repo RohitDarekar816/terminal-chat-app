@@ -1,5 +1,7 @@
 const readline = require('readline');
 const io = require('socket.io-client');
+const fs = require('fs');
+const path = require('path');
 const exitApp = require('../menu/exitApp');
 const getMenuOption = require('./getMenuOption');
 const render = require('./renderInterface');
@@ -57,8 +59,26 @@ function chatMessageInterface(client, chatRoom) {
 
       // Start chat room messaging
       chatMessageInterface(newClient, chatRoom);
+    } else if (message.startsWith('@')) {
+      // File sending
+      const filePath = message.slice(1);
+      try {
+        const stats = fs.statSync(filePath);
+        if (stats.size > 10 * 1024 * 1024) { // 10MB limit
+          console.log('File too large (max 10MB)');
+          return;
+        }
+        const data = fs.readFileSync(filePath);
+        const base64Data = data.toString('base64');
+        const filename = path.basename(filePath);
+        client.emit('send file', chatRoom, filename, base64Data);
+        console.log(`File ${filename} sent`);
+      } catch (error) {
+        console.log('Error sending file:', error.message);
+      }
+    } else {
+      client.emit('chat message', chatRoom, message);
     }
-    client.emit('chat message', chatRoom, message);
   });
 }
 
