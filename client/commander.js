@@ -28,7 +28,7 @@ program
     }
 
     // connect to the socket server after authentication
-    const client = io('https://command-line-chat-app.onrender.com', {
+    const client = io('http://localhost:3001', {
       auth: {
         token
       }
