@@ -42,7 +42,7 @@ function chatMessageInterface(client, chatRoom) {
       client.disconnect();
 
       // create a new client connection
-      const newClient = io('http://localhost:3001', {
+      const newClient = io('http://192.168.0.101:3001', {
         auth: {
           token
         }

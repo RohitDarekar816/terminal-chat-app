@@ -5,7 +5,7 @@ module.exports = async function joinChatRoom(client, chatRoom = null) {
     if (chatRoom) {
         client.emit('join', chatRoom);
     } else {
-        const response = await axios.get('http://localhost:3001/api/chatrooms');
+        const response = await axios.get('http://192.168.0.101:3001/api/chatrooms');
         const chatRooms = response.data;
         const chatRoomsOption = [
             {

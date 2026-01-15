@@ -14,7 +14,7 @@ module.exports = async function createChatRoom(client) {
     const answer = await prompt(question);
     const roomName = answer.roomName;
 
-    const response = await axios.post('http://localhost:3001/api/chatrooms', {
+    const response = await axios.post('http://192.168.0.101:3001/api/chatrooms', {
       roomName
     });
     const chatRoom = response.data;

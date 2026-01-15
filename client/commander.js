@@ -28,7 +28,7 @@ program
     }
 
     // connect to the socket server after authentication
-    const client = io('http://localhost:3001', {
+    const client = io('http://192.168.0.101:3001', {
       auth: {
         token
       }

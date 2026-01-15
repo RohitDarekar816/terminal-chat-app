@@ -58,7 +58,7 @@ function displayMessage(message, timestamp = null) {
 
 async function fetchHistory(room) {
   try {
-    const response = await axios.get(`http://localhost:3001/api/chatrooms/${room}/messages`);
+    const response = await axios.get(`http://192.168.0.101:3001/api/chatrooms/${room}/messages`);
     const messages = response.data;
     if (messages.length > 0) {
       console.info('--- Chat History ---');
